@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Resultat;
-use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+
 
 class Tournoi extends Model
 {
@@ -35,6 +37,7 @@ class Tournoi extends Model
 
         return $this->hasMany(Date::class, 'tournoiId');
     }
+
 
 
     public function saveResultat($idTournoi, $idSaison, $idJoueur, $idParcours, $couleur, $jour){
@@ -70,5 +73,19 @@ class Tournoi extends Model
 
     return $resultats;
     }
+
+    public function getResultatsFinaux($idTournoi){
+
+        $resultatsFinaux = DB::table('resultats')
+            ->join('joueurs', 'joueurs.id', '=', 'resultats.joueurId')
+            ->select('nom', 'prenom', 'couleur', DB::raw('SUM(resultat) as resultat_tournoi'))
+            ->where('tournoiId', '=', $idTournoi)
+            ->whereNotNull('resultat')
+            ->groupBy('joueurId', 'couleur')
+            ->orderBy('resultat_tournoi')
+            ->get();
+    
+        return $resultatsFinaux;
+        }
 
 }

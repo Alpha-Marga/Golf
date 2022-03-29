@@ -32,7 +32,7 @@
                     Saisie Score
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    @foreach($niveaux2 as $niveau)
+                    @foreach($niveauxClassement as $niveau)
                     <li><a class="dropdown-item" href="{{ route('nouveauScore', [$tournoi->idTournoi, $niveau]) }}">{{$niveau}}</a></li>
                     @endforeach
                 </ul>

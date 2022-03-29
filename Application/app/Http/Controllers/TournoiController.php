@@ -27,6 +27,7 @@ class TournoiController extends Controller
         return view('accueil', compact('tournoisFuturs', 'tournoiJour', 'tournoisPasses'));
     }
 
+    
     // Fonction qui récupère toutes les informations d'un tournoi et dirige vers la page concerné
 
     public function getTournament(int $id)
@@ -39,44 +40,29 @@ class TournoiController extends Controller
         }
 
         $parcours = Parcours::find($tournoi->parcoursId);
-        $trous = DB::table('trous')->distinct()->where('parcoursId', '=', $tournoi->parcoursId)->get(['idTrou']);
-        $couleurs = ['Noir', 'Blanc', 'Jaune', 'Bleu', 'Jaune'];
-        $niveaux1 = DB::table('trous')->distinct()->where('parcoursId', '=', $tournoi->parcoursId)->get(['couleur', 'genreJoueur'])->sortByDesc('couleur')->sortByDesc('genreJoueur');
-        $pars = DB::table('trous')->distinct()->where('parcoursId', '=', $tournoi->parcoursId)->get(['idtrou', 'par']);
+        $trous = $parcours->trousDistinct();
+        $niveauxParcours = $parcours->levelByColorAndGender();
+        $pars = $parcours->pars();
         $dateJour = Carbon::now()->format('Y-m-d');
 
         $saison = $tournoi->saisonId;
         $idParcours = $tournoi->parcoursId;
         $categorieTournoi = $tournoi->categorie;
-        $niveaux2 = DB::table('trous')->distinct()->where('genreJoueur', '=', $categorieTournoi)->get(['couleur']);
+        $niveauxClassement = $parcours->levelByColor($categorieTournoi);
         $dates = Tournoi::find($id)->dates;
         foreach ($dates as $date) {
             $jours[] = $date->jour;
         }
 
-        // $resultats = $tournoi->getResultats($id, $idParcours, $saison);
-
-        $resultats[] = Resultat::where('saisonId', $saison)
-            ->where('tournoiId', $id)
-            ->where('parcoursId', $idParcours)
-            ->whereNotNull('resultat')
-            ->get();
-
+        $resultats = $tournoi->getResultats($id, $saison, $idParcours);
 
         foreach ($resultats as $info) {
             $infos[] = $info->sortBy('resultat');
         }
 
-        $resultatsFinaux = DB::table('resultats')
-            ->join('joueurs', 'joueurs.id', '=', 'resultats.joueurId')
-            ->select('nom', 'prenom', 'couleur', DB::raw('SUM(resultat) as resultat_tournoi'))
-            ->where('tournoiId', '=', $id)
-            ->whereNotNull('resultat')
-            ->groupBy('joueurId', 'couleur')
-            ->orderBy('resultat_tournoi')
-            ->get();
+        $resultatsFinaux = $tournoi->getResultatsFinaux($id);
 
-        return view('vueTournoi', compact('tournoi', 'joueurs', 'parcours', 'jours', 'resultatsFinaux', 'ages', 'infos', 'trous', 'pars', 'niveaux1', "niveaux2", 'dateJour'));
+        return view('vueTournoi', compact('tournoi', 'joueurs', 'parcours', 'jours', 'resultatsFinaux', 'ages', 'infos', 'trous', 'pars', 'niveauxParcours', "niveauxClassement", 'dateJour'));
     }
 
 
@@ -99,6 +85,7 @@ class TournoiController extends Controller
     }
 
 
+    
     // Fonction qui sauvegarde toutes les données d'un nouveau tournoi
 
     public function saveTournament(Request $request)
