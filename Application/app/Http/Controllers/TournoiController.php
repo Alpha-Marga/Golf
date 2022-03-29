@@ -179,7 +179,7 @@ class TournoiController extends Controller
         $niveaux = DB::table('trous')->distinct()->where('parcoursId', '=', $tournoi->parcoursId)->get(['couleur','genreJoueur'])->sortByDesc('couleur')->sortByDesc('genreJoueur');
         $categorieTournoi = $tournoi->categorie;
      
-        // Récuperation des niveaux(couleurs) des joueurs qui participent au tournoi
+        // Récuperation des niveaux(couleurs) des golfeurs(se) qui participent au tournoi
         $niveaux2 = array();
         foreach ($joueurs as $joueur) {
 
