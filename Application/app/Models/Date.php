@@ -12,4 +12,9 @@ class Date extends Model
     public function tournoi(){
         return $this->belongsTo(Tournoi::class);
     }
+
+    public function getDays($saisonId, $tournoiId){
+        $jours = Date::where('saisonId', $saisonId)->where('tournoiId', $tournoiId)->get();
+        return $jours;
+    }
 }

@@ -12,4 +12,5 @@ class Joueur extends Model
     public function tournois(){
         return $this->belongsToMany(Tournoi::class);
     }
+    
 }

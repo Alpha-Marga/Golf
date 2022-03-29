@@ -24,11 +24,12 @@ class CoupController extends Controller
 
         $tournoi = Tournoi::find($id);
         $dateJour = Carbon::now()->format('Y-m-d');
-        $jours = Date::where('saisonId', $tournoi->saisonId)->where('tournoiId', $tournoi->idTournoi)->get();
+        $date = new Date();
+        $dates = $date->getDays($tournoi->saisonId, $tournoi->idTournoi);
 
-        for ($i = 0; $i < count($jours); $i++) {
-            if ($jours[$i]->date == $dateJour) {
-                $leJour = $jours[$i];
+        for ($i = 0; $i < count($dates); $i++) {
+            if ($dates[$i]->date == $dateJour) {
+                $laDate = $dates[$i];
             }
         }
         if ($niveau == 'Noir')
@@ -42,9 +43,9 @@ class CoupController extends Controller
         else
             $niveauJoueur = 'Dames';
 
-        $jour = $leJour->jour;
+        $jour = $laDate->jour;
         $parcours = Parcours::find($tournoi->parcoursId);
-        $saison = $leJour->saisonId;
+        $saison = $laDate->saisonId;
         $categorieTournoi = $tournoi->categorie;
         $trous = DB::table('trous')->distinct()->get(['idTrou']);
         $joueurs = Tournoi::find($id)->joueurs;

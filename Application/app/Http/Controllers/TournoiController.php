@@ -21,9 +21,11 @@ class TournoiController extends Controller
     public function getAllTournament()
     {
         $date = Carbon::now()->format('Y-m-d');
-        $tournoiJour = Tournoi::where('debut', '<=', $date)->where('fin', '>=', $date)->get();
-        $tournoisFuturs = Tournoi::where('debut', '>', $date)->get();
-        $tournoisPasses = Tournoi::where('fin', '<', $date)->get();
+
+        $tournoi = new Tournoi();
+        $tournoiJour = $tournoi->tournamentCurrent();
+        $tournoisFuturs = $tournoi->tournamentComing();
+        $tournoisPasses = $tournoi->tournamentPast();
         return view('accueil', compact('tournoisFuturs', 'tournoiJour', 'tournoisPasses'));
     }
 
@@ -54,25 +56,25 @@ class TournoiController extends Controller
             $jours[] = $date->jour;
         }
 
-        $resultats = $tournoi->getResultats($id, $saison, $idParcours);
+        $resultats = $tournoi->getResultats($saison, $idParcours);
 
         foreach ($resultats as $info) {
             $infos[] = $info->sortBy('resultat');
         }
 
-        $resultatsFinaux = $tournoi->getResultatsFinaux($id);
+        $resultatsFinaux = $tournoi->getResultatsFinaux();
 
         return view('vueTournoi', compact('tournoi', 'joueurs', 'parcours', 'jours', 'resultatsFinaux', 'ages', 'infos', 'trous', 'pars', 'niveauxParcours', "niveauxClassement", 'dateJour'));
     }
 
 
-    // Fonction du contrôleur qui dirige vers la page de création d'un tournoi
+    // Fonction du contrôleur qui récupère les informations necessaires et crée la vue de création d'un tournoi
 
     public function newTournament($genre)
     {
         $parcours = Parcours::all();
-        $date = Carbon::now()->format('Y-m-d');
-        $saisons = Saison::where('debutSaison', '<=', $date)->where('finSaison', '>=', $date)->get();
+        $saison = new Saison();
+        $saison = $saison->saisonCurrent();
         if ($genre == 'Femme') {
             $categorie = 'Dames';
         } else {
@@ -81,7 +83,7 @@ class TournoiController extends Controller
         $id = count(Tournoi::all()) + 1;
         $joueurs = Joueur::where('genre', '=', $genre)->get();
 
-        return view('creationTournoi', compact('categorie', 'saisons', 'parcours', 'id', 'joueurs'));
+        return view('creationTournoi', compact('categorie', 'saison', 'parcours', 'id', 'joueurs'));
     }
 
 
@@ -106,7 +108,6 @@ class TournoiController extends Controller
         $tournoi->save();
 
         $joueurs = $request->input('joueurs');
-
 
         // Sauvegarde des joueurs participants
 
@@ -161,13 +162,14 @@ class TournoiController extends Controller
         foreach ($dates as $date) {
             $jours[] = $date->jour;
         }
-        $trous = DB::table('trous')->distinct()->where('parcoursId', '=', $tournoi->parcoursId)->get(['idTrou']);
-        $couleurs = ['Noir', 'Blanc', 'Jaune', 'Bleu', 'Jaune'];
-        $niveaux = DB::table('trous')->distinct()->where('parcoursId', '=', $tournoi->parcoursId)->get(['couleur','genreJoueur'])->sortByDesc('couleur')->sortByDesc('genreJoueur');
+
+        $trous = $parcours->trousDistinct();
+        $niveauxParcours = $parcours->levelByColorAndGender();
         $categorieTournoi = $tournoi->categorie;
      
         // Récuperation des niveaux(couleurs) des golfeurs(se) qui participent au tournoi
-        $niveaux2 = array();
+
+        $niveauxJoueurs = array();
         foreach ($joueurs as $joueur) {
 
             if ($joueur->Niveau == 'Messieurs Professionnels')
@@ -181,14 +183,13 @@ class TournoiController extends Controller
             else 
                 $couleur = 'Rouge';
     
-            if (!in_array($couleur, $niveaux2)) {
-                $niveaux2[] = $couleur;
+            if (!in_array($couleur, $niveauxJoueurs)) {
+                $niveauxJoueurs[] = $couleur;
             }
         }
 
+        $pars = $parcours->pars();
 
-        $pars = DB::table('trous')->distinct()->where('parcoursId', '=', $tournoi->parcoursId)->get(['idtrou', 'par']);
-
-        return view('nouveauTournoi', compact('tournoi', 'joueurs', 'parcours', 'ages', 'jours', 'dateJour', 'trous', 'pars', 'niveaux', 'niveaux2'));
+        return view('nouveauTournoi', compact('tournoi', 'joueurs', 'parcours', 'ages', 'jours', 'dateJour', 'trous', 'pars', 'niveauxParcours', 'niveauxJoueurs'));
     }
 }

@@ -24,24 +24,15 @@ class SaisonController extends Controller
         foreach ($saisons as $saison) {
             $tournois[] = $saison->tournois;
         }
-        $niveauxMessieurs = DB::table('trous')->distinct()->where('genreJoueur', '=', 'Messieurs')->get(['couleur']);
-        $niveauxDames = DB::table('trous')->distinct()->where('genreJoueur', '=', 'Dames')->get(['couleur']);
-        $categories = DB::table('tournois')->distinct()->get(['categorie']);
-
+        $saison = new Saison();
+        $niveauxMessieurs = $saison->levelMessieurs();
+        $niveauxDames = $saison->levelDames();
+        $categories = $saison->categoriesTournament();
 
         foreach ($saisons as $saison) {
-            $resultatTournoi[] = DB::table('resultats')
-                ->join('joueurs', 'joueurs.id', '=', 'resultats.joueurId')
-                ->join('tournois', 'tournois.idTournoi', '=', 'resultats.tournoiId')
-                ->select('nom', 'prenom', 'couleur', 'categorie', 'resultats.saisonId', DB::raw('SUM(resultat) as resultat_saison'))
-                ->where('resultats.saisonId', '=', $saison->idSaison)
-                ->whereNotNull('resultat')
-                ->groupBy('joueurId', 'couleur', 'categorie', 'resultats.saisonId')
-                ->orderBy('resultat_saison')
-                ->get();
+            $resultatTournoi[] = $saison->getResultatsSaison();
         }
-
-
+        
         return view('classementSaison', compact('saisons', 'resultatTournoi', 'niveauxMessieurs', 'niveauxDames', 'categories'));
     }
 }

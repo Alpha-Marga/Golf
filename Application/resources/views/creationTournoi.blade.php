@@ -20,7 +20,7 @@
                         <h2>Création d'un tournoi</h2>
                     </fieldset>
 
-                    <input type="hidden" name="saisonId" value=" {{ $saisons[0]->idSaison }} "><br>
+                    <input type="hidden" name="saisonId" value=" {{ $saison[0]->idSaison }} "><br>
                     <input type="hidden" name="idTournoi" value=" {{ $id }} ">
                     <input type="hidden" name="categorie" value=" {{ $categorie }} ">
 

@@ -31,15 +31,7 @@ class JoueurController extends Controller
             $couleur = 'Rouge';
 
         foreach ($tournois as $tournoi) {
-            $resultatsTournoi[] = DB::table('resultats')
-                ->join('joueurs', 'joueurs.id', '=', 'resultats.joueurId')
-                ->select('joueurId', 'tournoiId', 'couleur', DB::raw('SUM(resultat) as resultat_tournoi'))
-                ->where('tournoiId', '=', $tournoi->idTournoi)
-                ->where('couleur', '=', $couleur)
-                ->whereNotNull('resultat')
-                ->groupBy('joueurId', 'couleur', 'tournoiId')
-                ->orderBy('resultat_tournoi')
-                ->get();
+            $resultatsTournoi[] = $tournoi->getResultatsPlayers($couleur);
         }
 
         return view('vueJoueur', compact('joueur', 'age', 'tournois', 'resultatsTournoi'));

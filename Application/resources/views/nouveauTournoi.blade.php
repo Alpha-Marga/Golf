@@ -32,7 +32,7 @@
                     Saisie Score
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    @foreach($niveauxClassement as $niveau)
+                    @foreach($niveauxJoueurs as $niveau)
                     <li><a class="dropdown-item" href="{{ route('nouveauScore', [$tournoi->idTournoi, $niveau]) }}">{{$niveau}}</a></li>
                     @endforeach
                 </ul>
@@ -83,7 +83,7 @@
                 <th>Total</th>
                 <tr>
                 </tr>
-                @foreach($niveaux as $niveau)
+                @foreach($niveauxParcours as $niveau)
                 @if($niveau->couleur == 'Noir')
                 @php ($background = '#202020')
                 @elseif($niveau->couleur == 'Blanc')
