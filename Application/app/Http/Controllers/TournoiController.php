@@ -125,26 +125,6 @@ class TournoiController extends Controller
             }
         }
 
-        // Sauvegarde des dates de déroulement
-
-        $finTournoi = $request->input('fin');
-        $debutTournoi = $request->input('debut');
-        $nbJour = Carbon::parse($debutTournoi)->floatDiffInDays($finTournoi);
-
-        $dateJ = $request->input('debut');
-        $dateN1 = date('Y-m-d', strtotime("$dateJ +1 day"));
-        for ($i = 0; $i <= $nbJour; $i++) {
-            $jour = $i;
-            $date = new Date;
-            $date->timestamps = false;
-            $date->saisonId = $request->input('saisonId');
-            $date->tournoiId = $request->input('idTournoi');
-            $date->jour = $jour + 1;
-            $date->date = date('Y-m-d', strtotime("$dateJ + $jour day"));
-
-            $date->save();
-        }
-
         // Récuperation des données necessaires pour l'affichage des infos du nouveau terrain
 
         $id = count(Tournoi::all());

@@ -82,14 +82,8 @@ class CoupController extends Controller
             for ($i = 0; $i < count($trous); $i++) {
                 if ($nbCoups[$i] != null) {
 
-                    $leCoup = Coup::where('joueurId', $request->input('joueurId'))
-                        ->where('saisonId', $request->input('saisonId'))
-                        ->where('tournoiId', $request->input('idTournoi'))
-                        ->where('jour', $request->input('jour'))
-                        ->where('couleur',  $request->input('couleur'))
-                        ->where('parcoursId', $request->input('parcoursId'))
-                        ->where('trouId',  $trous[$i])
-                        ->get();
+                    $leCoup = new Coup();
+                    $leCoup = $leCoup->getCoup($request->input('joueurId'), $request->input('saisonId'), $request->input('idTournoi'), $request->input('jour'), $request->input('couleur'), $request->input('parcoursId'),  $trous[$i]);
 
                     // Sauvegarde des coups réalisés
 
@@ -105,7 +99,6 @@ class CoupController extends Controller
                         $coup->couleur = $request->input('couleur');
                         $coup->joueurId = $request->input('joueurId');
                         $coup->nombreCoups = $nbCoups[$i];
-
                         $coup->save();
                     } else {
 
@@ -121,13 +114,8 @@ class CoupController extends Controller
 
             $tournoi = Tournoi::find($request->input('idTournoi'));
             $joueur = Joueur::find($request->input('joueurId'));
-            $coups = Coup::where('joueurId', $coup->joueurId)
-                ->where('saisonId', $coup->saisonId)
-                ->where('tournoiId', $coup->tournoiId)
-                ->where('jour', $coup->jour)
-                ->where('couleur',  $coup->couleur)
-                ->where('parcoursId', $coup->parcoursId)
-                ->get();
+            $coup = new Coup();
+            $coups = $coup->getAllCoups($request->input('joueurId'), $request->input('saisonId'), $request->input('idTournoi'), $request->input('jour'), $request->input('couleur'), $request->input('parcoursId'));
 
             // Sauvegarde des resulats obtenus et création de la vue qui affiche les resultats
 
@@ -154,8 +142,8 @@ class CoupController extends Controller
                 $scores[] = $coups[$i]->nombreCoups - $trou->par;
                 $result = $result + ($coups[$i]->nombreCoups - $trou->par);
             }
-
             return view('vueResultat', compact('joueur', 'coups', 'scores', 'result'));
+
         } else {
 
             // Création du message d'erreur si aucun score n'est saisi
