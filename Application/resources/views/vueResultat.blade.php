@@ -28,7 +28,7 @@
                     </table>
                 </div>
             </div><br><br>
-            <a class="btn link2" href="{{ route('nouveauScore', [$coups[0]->tournoiId, [$coups[0]->couleur]) }}">Retour</a>
+            <a class="btn link2" href="{{ route('nouveauScore', [$coups[0]->tournoiId, $coups[0]->couleur]) }}">Retour</a>
         </div>
     </div>
 </body>

@@ -49,15 +49,15 @@ class CoupController extends Controller
         $categorieTournoi = $tournoi->categorie;
         $trous = DB::table('trous')->distinct()->get(['idTrou']);
         $joueurs = Tournoi::find($id)->joueurs;
-        
+
         foreach ($joueurs as $joueur) {
             if ($joueur->Niveau == $niveauJoueur) {
                 $joueursNiveau[] = $joueur;
             }
         }
-        if(isset($joueursNiveau)){
-        return view('nouveauScore', compact('id', 'jour', 'saison', 'parcours', 'trous', 'joueursNiveau', 'niveau'));
-    }
+        if (isset($joueursNiveau)) {
+            return view('nouveauScore', compact('id', 'jour', 'saison', 'parcours', 'trous', 'joueursNiveau', 'niveau'));
+        }
     }
 
 
@@ -71,52 +71,53 @@ class CoupController extends Controller
         $trous = $request->input('trouId');
         $nbCoups = $request->input('nombreCoups');
 
-
-        $comptCoups = 0;
+        $compteur = 0;
         for ($i = 0; $i < count($trous); $i++) {
             if ($nbCoups[$i] != null) {
-            
-                $leCoup = Coup::where('joueurId', $request->input('joueurId'))
-                    ->where('saisonId', $request->input('saisonId'))
-                    ->where('tournoiId', $request->input('idTournoi'))
-                    ->where('jour', $request->input('jour'))
-                    ->where('couleur',  $request->input('couleur'))
-                    ->where('parcoursId', $request->input('parcoursId'))
-                    ->where('trouId',  $trous[$i])
-                    ->get();
-
-                // Sauvegarde des coups réalisés
-
-                if ($leCoup == null) {
-                    $coup = new Coup;
-                    $coup->timestamps = false;
-
-                    $coup->saisonId = $request->input('saisonId');
-                    $coup->tournoiId = $request->input('idTournoi');
-                    $coup->parcoursId = $request->input('parcoursId');
-                    $coup->jour = $request->input('jour');
-                    $coup->trouId = $trous[$i];
-                    $coup->couleur = $request->input('couleur');
-                    $coup->joueurId = $request->input('joueurId');
-                    $coup->nombreCoups = $nbCoups[$i];
-
-                    $coup->save();
-
-                    $comptCoups = $comptCoups + 1;
-
-                } else {
-
-                    // Création du message d'erreur si le nombre de coups d'un trou a dejà été enregistré
-                    $message = 'Vous avez dejà enregistré le nombre de coups pour le Trou' . ' ' . $leCoup[0]->trouId . ' !';
-                    $leCoup['tournoiId'] = $request->input('idTournoi');
-                    $leCoup['couleur'] = $request->input('couleur');
-
-                    return view('vueMessage', compact('message', 'leCoup'));
-                }
+                $compteur = $compteur + 1;
             }
         }
 
-        if ($comptCoups > 0) {
+        if ($compteur > 0) {
+            for ($i = 0; $i < count($trous); $i++) {
+                if ($nbCoups[$i] != null) {
+
+                    $leCoup = Coup::where('joueurId', $request->input('joueurId'))
+                        ->where('saisonId', $request->input('saisonId'))
+                        ->where('tournoiId', $request->input('idTournoi'))
+                        ->where('jour', $request->input('jour'))
+                        ->where('couleur',  $request->input('couleur'))
+                        ->where('parcoursId', $request->input('parcoursId'))
+                        ->where('trouId',  $trous[$i])
+                        ->get();
+
+                    // Sauvegarde des coups réalisés
+
+                    if (count($leCoup) == 0) {
+                        $coup = new Coup;
+                        $coup->timestamps = false;
+
+                        $coup->saisonId = $request->input('saisonId');
+                        $coup->tournoiId = $request->input('idTournoi');
+                        $coup->parcoursId = $request->input('parcoursId');
+                        $coup->jour = $request->input('jour');
+                        $coup->trouId = $trous[$i];
+                        $coup->couleur = $request->input('couleur');
+                        $coup->joueurId = $request->input('joueurId');
+                        $coup->nombreCoups = $nbCoups[$i];
+
+                        $coup->save();
+                    } else {
+
+                        // Création du message d'erreur si le nombre de coups d'un trou a dejà été enregistré
+                        $message = 'Vous avez dejà enregistré le nombre de coups pour le Trou' . ' ' . $leCoup[0]->trouId . ' !';
+                        $leCoup['tournoiId'] = $request->input('idTournoi');
+                        $leCoup['couleur'] = $request->input('couleur');
+
+                        return view('vueMessage', compact('message', 'leCoup'));
+                    }
+                }
+            }
 
             $tournoi = Tournoi::find($request->input('idTournoi'));
             $joueur = Joueur::find($request->input('joueurId'));
@@ -155,7 +156,6 @@ class CoupController extends Controller
             }
 
             return view('vueResultat', compact('joueur', 'coups', 'scores', 'result'));
-
         } else {
 
             // Création du message d'erreur si aucun score n'est saisi
