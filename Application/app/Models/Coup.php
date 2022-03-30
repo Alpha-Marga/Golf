@@ -9,6 +9,7 @@ class Coup extends Model
 {
     use HasFactory;
 
+// Fonction qui retourne le coup réalisé par un joueur sur un trou
     public function getCoup($joueurId, $saisonId, $idTournoi, $jour, $couleur, $parcoursId, $trouId)
     {
         $leCoup = Coup::where('joueurId', $joueurId)
@@ -23,6 +24,7 @@ class Coup extends Model
         return $leCoup;
     }
 
+// Fonction qui retourne les coups réalisés par un joueur 
     public function getAllCoups($joueurId, $saisonId, $idTournoi, $jour, $couleur, $parcoursId)
     {
         $leCoup = Coup::where('joueurId', $joueurId)

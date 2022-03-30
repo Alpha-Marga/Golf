@@ -130,7 +130,7 @@ class CoupController extends Controller
                 $resultat->couleur = $request->input('couleur');
                 $resultat->joueurId = $request->input('joueurId');
 
-                $resultat->resultat = $tournoi->saveResultat($request->input('idTournoi'),  $request->input('saisonId'), $request->input('joueurId'), $request->input('parcoursId'), $request->input('couleur'), $request->input('jour'));
+                $resultat->resultat = $tournoi->getResultatsPlayer($request->input('idTournoi'),  $request->input('saisonId'), $request->input('joueurId'), $request->input('parcoursId'), $request->input('couleur'), $request->input('jour'));
 
                 $resultat->save();
             }

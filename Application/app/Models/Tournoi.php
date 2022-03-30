@@ -39,11 +39,11 @@ class Tournoi extends Model
 
     public function dates()
     {
-
         return $this->hasMany(Date::class, 'tournoiId');
     }
 
 
+    // Fonction qui charge les tournois du moment
     public function tournamentCurrent()
     {
         $date = Carbon::now()->format('Y-m-d');
@@ -52,6 +52,7 @@ class Tournoi extends Model
         return $tournoiMoment;
     }
 
+    // Fonction qui charge les tournois à venir
     public function tournamentComing()
     {
         $date = Carbon::now()->format('Y-m-d');
@@ -60,6 +61,7 @@ class Tournoi extends Model
         return $tournoisFuturs;
     }
 
+    // Fonction qui charge les tournois passés
     public function tournamentPast()
     {
         $date = Carbon::now()->format('Y-m-d');
@@ -69,7 +71,8 @@ class Tournoi extends Model
     }
 
 
-    public function saveResultat($idTournoi, $idSaison, $idJoueur, $idParcours, $couleur, $jour)
+    // Fonction qui retourne le resultat obtenu par un joueur sur l'ensemble de trous
+    public function getResultatsPlayer($idTournoi, $idSaison, $idJoueur, $idParcours, $couleur, $jour)
     {
 
         $coups = Coup::where('joueurId', $idJoueur)
@@ -92,7 +95,8 @@ class Tournoi extends Model
         }
     }
 
-    public function getResultats($idSaison, $idParcours)
+    // Fonction qui retourne les resultats d'un tournoi par parcours
+    public function getResultatsByParcours($idSaison, $idParcours)
     {
 
         $resultats[] = Resultat::where('saisonId', $idSaison)
@@ -104,9 +108,9 @@ class Tournoi extends Model
         return $resultats;
     }
 
+    // Fonction qui retourne les resultats d'un tournoi
     public function getResultatsFinaux()
     {
-
         $resultatsFinaux = DB::table('resultats')
             ->join('joueurs', 'joueurs.id', '=', 'resultats.joueurId')
             ->select('nom', 'prenom', 'couleur', DB::raw('SUM(resultat) as resultat_tournoi'))
@@ -118,8 +122,10 @@ class Tournoi extends Model
 
         return $resultatsFinaux;
     }
-   
-    public function getResultatsPlayers($couleur)
+
+
+   // Fonction qui retourne les resultats d'un tournoi selon la couleur
+    public function getResultatsByColor($couleur)
     {
         $resultatsJoueurs =  DB::table('resultats')
         ->join('joueurs', 'joueurs.id', '=', 'resultats.joueurId')

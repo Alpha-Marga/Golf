@@ -13,8 +13,9 @@ class Date extends Model
         return $this->belongsTo(Tournoi::class);
     }
 
+    // Fonction qui retourne les dates (jour) d'un tournoi
     public function getDays($saisonId, $tournoiId){
-        $jours = Date::where('saisonId', $saisonId)->where('tournoiId', $tournoiId)->get();
-        return $jours;
+        $dates = Date::where('saisonId', $saisonId)->where('tournoiId', $tournoiId)->get();
+        return $dates;
     }
 }

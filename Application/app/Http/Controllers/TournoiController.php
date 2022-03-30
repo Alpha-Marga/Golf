@@ -56,7 +56,7 @@ class TournoiController extends Controller
             $jours[] = $date->jour;
         }
 
-        $resultats = $tournoi->getResultats($saison, $idParcours);
+        $resultats = $tournoi->getResultatsByParcours($saison, $idParcours);
 
         foreach ($resultats as $info) {
             $infos[] = $info->sortBy('resultat');

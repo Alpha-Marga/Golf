@@ -31,7 +31,7 @@ class JoueurController extends Controller
             $couleur = 'Rouge';
 
         foreach ($tournois as $tournoi) {
-            $resultatsTournoi[] = $tournoi->getResultatsPlayers($couleur);
+            $resultatsTournoi[] = $tournoi->getResultatsByColor($couleur);
         }
 
         return view('vueJoueur', compact('joueur', 'age', 'tournois', 'resultatsTournoi'));
