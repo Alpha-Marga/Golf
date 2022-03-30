@@ -1,4 +1,4 @@
-@php ($titre = "Tournoi")
+@php ($titre = "Saisie Score")
 @include('layouts.entete')
 
 <head>

@@ -71,10 +71,9 @@ class Tournoi extends Model
     }
 
 
-    // Fonction qui retourne le resultat obtenu par un joueur sur l'ensemble de trous
+    // Fonction qui retourne le resultat obtenu par un joueur sur l'ensemble des trous
     public function getResultatsPlayer($idTournoi, $idSaison, $idJoueur, $idParcours, $couleur, $jour)
     {
-
         $coups = Coup::where('joueurId', $idJoueur)
             ->where('saisonId', $idSaison)
             ->where('tournoiId', $idTournoi)

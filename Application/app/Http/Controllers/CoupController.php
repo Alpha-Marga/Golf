@@ -16,17 +16,12 @@ use Illuminate\Support\Facades\DB;
 
 class CoupController extends Controller
 {
-
     // Fonction qui récupère les informations nécessaires pour la saisie des scores et affiche la vue du formulaire
-
-    public function newScore($id, $niveau)
-    {
-
+    public function newScore($id, $niveau){
         $tournoi = Tournoi::find($id);
         $dateJour = Carbon::now()->format('Y-m-d');
         $date = new Date();
         $dates = $date->getDays($tournoi->saisonId, $tournoi->idTournoi);
-
         for ($i = 0; $i < count($dates); $i++) {
             if ($dates[$i]->date == $dateJour) {
                 $laDate = $dates[$i];
@@ -42,14 +37,12 @@ class CoupController extends Controller
             $niveauJoueur = 'Dames Bon Index';
         else
             $niveauJoueur = 'Dames';
-
         $jour = $laDate->jour;
         $parcours = Parcours::find($tournoi->parcoursId);
         $saison = $laDate->saisonId;
         $categorieTournoi = $tournoi->categorie;
-        $trous = DB::table('trous')->distinct()->get(['idTrou']);
+        $trous = $parcours->trousDistinct();
         $joueurs = Tournoi::find($id)->joueurs;
-
         foreach ($joueurs as $joueur) {
             if ($joueur->Niveau == $niveauJoueur) {
                 $joueursNiveau[] = $joueur;
@@ -65,12 +58,11 @@ class CoupController extends Controller
 
     // Fonction qui sauvegarde les nombres de coups réalisés par un golfeur(se), calcul les points obtenu et crée la vue qui affiche le resultat
 
-    public function saveMatch(Request $request)
+    public function saveScore(Request $request)
     {
-
         $trous = $request->input('trouId');
         $nbCoups = $request->input('nombreCoups');
-
+        
         $compteur = 0;
         for ($i = 0; $i < count($trous); $i++) {
             if ($nbCoups[$i] != null) {

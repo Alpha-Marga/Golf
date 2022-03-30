@@ -48,7 +48,7 @@ Route::get('nouveauScore/{id}/{niveau}', [CoupController::class, 'newScore'])
 Route::get('vueJoueur/{id}', [JoueurController::class, 'getPlayer'])
 ->name('vueJoueur');
 
-Route::post('vueResultat', [CoupController::class, 'saveMatch'])
+Route::post('vueResultat', [CoupController::class, 'saveScore'])
 ->name('vueResultat');
 
 Route::get('classementTournoi/{id}', [TournoiController::class, 'classement'])
