@@ -18,7 +18,7 @@ class SaisonController extends Controller
 
     // Fonction qui permet d'obtenir le classement géneral des saisons
     
-    public function classementSaison()
+    public function seasonRanking()
     {
         $saisons = Saison::all();
         foreach ($saisons as $saison) {

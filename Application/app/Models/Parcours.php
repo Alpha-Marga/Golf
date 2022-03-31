@@ -44,7 +44,6 @@ class Parcours extends Model
         return $pars;    
     } 
     
-    
     // Fonction qui retourne la distance total des trous d'un parcours
     public function distancesTotal($parcoursId, $couleur){
         $distanceTotal = DB::table('trous')

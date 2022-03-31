@@ -1,4 +1,4 @@
-@php ($titre = "Accueil")
+@php ($titre = "Classement saison")
 @include('layouts.entete')
 
 <body class="antialiased">

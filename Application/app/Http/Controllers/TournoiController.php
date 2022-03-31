@@ -20,8 +20,6 @@ class TournoiController extends Controller
 
     public function getAllTournament()
     {
-        $date = Carbon::now()->format('Y-m-d');
-
         $tournoi = new Tournoi();
         $tournoiJour = $tournoi->tournamentCurrent();
         $tournoisFuturs = $tournoi->tournamentComing();
