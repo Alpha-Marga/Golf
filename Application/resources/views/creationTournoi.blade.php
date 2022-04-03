@@ -34,9 +34,9 @@
                         @endforeach
                     </select><br>
 
-                    <input id="zone_text" class="ajout" type="text" name="debut" placeholder="Date debut" onfocus="(this.type='date')" required><br>
+                    <input  class="ajout" type="text" name="debut" placeholder="Date debut" onfocus="(this.type='date')" required><br>
 
-                    <input id="zone_text" class="ajout" type="text" name="fin" placeholder="Date fin" onfocus="(this.type='date')" required><br>
+                    <input  class="ajout" type="text" name="fin" placeholder="Date fin" onfocus="(this.type='date')" required><br>
 
                     <label class="col-sm-3 col-form-label">Participants</label><br>
                     <div class="div2">

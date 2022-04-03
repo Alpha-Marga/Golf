@@ -26,31 +26,25 @@ class Saison extends Model
     }
 
     // Fonction qui retourne les niveaux des Hommes
-    public function levelMessieurs()
-    {
+    public function levelMessieurs(){
         $niveaux = DB::table('trous')->distinct()->where('genreJoueur', '=', 'Messieurs')->get(['couleur']);
         return $niveaux;
     }
 
     // Fonction qui retourne les niveaux des Femmes
-    public function levelDames()
-    {
+    public function levelDames(){
         $niveaux = DB::table('trous')->distinct()->where('genreJoueur', '=', 'Dames')->get(['couleur']);
-
         return $niveaux;
     }
 
     // Fonction qui retourne les categories des tournois
-    public function categoriesTournament()
-    {
+    public function categoriesTournament() {
         $categories = DB::table('tournois')->distinct()->get(['categorie']);
-
         return $categories;
     }
 
     // Fonction qui retourne les resultats d'une saison
-    public function getResultatsSaison()
-    {
+    public function getResultatsSaison(){
         $resultatsSaison = DB::table('resultats')
         ->join('joueurs', 'joueurs.id', '=', 'resultats.joueurId')
         ->join('tournois', 'tournois.idTournoi', '=', 'resultats.tournoiId')
@@ -60,7 +54,6 @@ class Saison extends Model
         ->groupBy('joueurId', 'couleur', 'categorie', 'resultats.saisonId')
         ->orderBy('resultat_saison')
         ->get();
-
         return $resultatsSaison;
     }
 }

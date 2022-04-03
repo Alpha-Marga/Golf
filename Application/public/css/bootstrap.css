@@ -2230,8 +2230,9 @@ progress {
   padding-top: calc(0.375rem + 1px);
   padding-bottom: calc(0.375rem + 1px);
   margin-bottom: 0;
-  font-size: 1.2em;
+  font-size: 1.1em;
   line-height: 1.5;
+  color: white;
 }
 
 .col-form-label-lg {
@@ -3633,7 +3634,7 @@ textarea.form-control-lg {
 .btn-lg3, .btn-group-lg > .btn {
   padding: 0.25rem 2rem;
   font-size: 1rem;
-  border-radius: 0.5rem;
+  border-radius: 5px;
   
 }
 

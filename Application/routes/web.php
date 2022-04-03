@@ -27,9 +27,6 @@ Route::get('/dashboard', function () {
 // Route::get('joueur', [JoueurController::class, 'getAllJoueurs'])
 // ->name('joueur');
 
-// Route::get('vueTournois', [TournoiController::class, 'getAllTournament'])
-// ->name('vueTournois');
-
 Route::get('vueTournoi/{id}', [TournoiController::class, 'getTournament'])
 ->name('vueTournoi');
 
@@ -39,8 +36,8 @@ Route::get('creationTournoi/{genre}', [TournoiController::class, 'newTournament'
 Route::post('nouveauTournoi', [TournoiController::class, 'saveTournament'])
 ->name('nouveauTournoi');
 
-// Route::get('vueParcours/{id}', [ParcoursController::class, 'getParcours'])
-// ->name('vueParcours');
+Route::post('modifierProfil', [JoueurController::class, 'updateProfil'])
+->name('modifierProfil');
 
 Route::get('nouveauScore/{id}/{niveau}', [CoupController::class, 'newScore'])
 ->name('nouveauScore');
@@ -51,17 +48,7 @@ Route::get('vueJoueur/{id}', [JoueurController::class, 'getPlayer'])
 Route::post('vueResultat', [CoupController::class, 'saveScore'])
 ->name('vueResultat');
 
-// Route::get('classementTournoi/{id}', [TournoiController::class, 'classement'])
-// ->name('classementTournoi');
-
 Route::get('classementSaison', [SaisonController::class, 'seasonRanking'])
 ->name('classementSaison');
-// Route::get('vueTournoi/{id}', [
-
-//     'as' => 'vueTournoi.getTournament',
-
-//     'uses' => 'TournoiController@getTournament',
-
-// ]);
 
 require __DIR__.'/auth.php';
