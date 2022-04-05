@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Joueur extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nom', 'prenom', 'adresse', 'cp', 'ville', 'telephone', 'Niveau'];
+    protected $fillable = ['nom', 'prenom', 'adresse', 'cp', 'ville', 'telephone', 'Niveau', 'photo'];
 
     public function tournois()
     {
@@ -30,5 +31,12 @@ class Joueur extends Model
         else
             $couleur = 'Rouge';
         return $couleur;
+    }
+
+    // Fonction qui retourne les niveaux selon le genre d'un joueur
+    public function getLevelByGender()
+    {
+        $niveaux = DB::table('joueurs')->distinct()->where('genre', '=', $this->genre)->get(['Niveau']);
+        return $niveaux;    
     }
 }

@@ -27,6 +27,8 @@ Route::get('/dashboard', function () {
 // Route::get('joueur', [JoueurController::class, 'getAllJoueurs'])
 // ->name('joueur');
 
+Route::get('accueil', [TournoiController::class, 'getAllTournament'])->name('accueil');
+
 Route::get('vueTournoi/{id}', [TournoiController::class, 'getTournament'])
 ->name('vueTournoi');
 

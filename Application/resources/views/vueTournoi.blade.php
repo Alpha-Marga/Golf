@@ -5,9 +5,9 @@
     <div class="container h-100">
         <br><br>
 
-<!-- Affichage de la carte de présentation du tournoi -->
+        <!-- Affichage de la carte de présentation du tournoi -->
 
-        <div class="div3">
+        <div class="div3a">
             <div id="child1">
                 <img src="../image/tournoi.jpg" />
             </div>
@@ -18,12 +18,12 @@
                 <h5> <b>Fin du tournoi:</b> {{ $tournoi->fin }} </h5><br>
                 <h5> <b>Catégorie:</b> {{ $tournoi->categorie }}</h5><br>
                 <h5> <b>Nombre de participants:</b> {{ count($tournoi->joueurs) }}</h5><br>
-                <h5> <b>Parcours:</b> {{ $tournoi->parcours->nomParcours }}</h5><br>
+                <h5> <b>Parcours:</b> {{ $tournoi->parcours->nomParcours }}</h5>
             </div>
         </div><br>
 
 
-<!-- Affichage du bouton qui permet de saisir les scores des joueurs si on est connecté-->
+        <!-- Affichage du bouton qui permet de saisir les scores des joueurs si on est connecté-->
 
         @if (Route::has('login') && ($tournoi->fin >= $dateJour && $tournoi->debut <= $dateJour )) @auth <br>
 
@@ -43,13 +43,14 @@
 
             <br>
 
-<!-- Affichage des golfeurs ou golfeuses qui participent aux tournois -->
+            <!-- Affichage des golfeurs ou golfeuses qui participent aux tournois -->
 
             @if($tournoi->categorie == 'Messieurs')
             <h3 class="title">Golfeurs</h3>
             @else
             <h3 class="title">Golfeuses</h3>
             @endif
+            <br>
             <div class="div4">
                 @for($i=0; $i<count($joueurs); $i++) <div class="divParticipants">
                     <a href="{{ route('vueJoueur', [ $joueurs[$i]->id]) }}">
@@ -67,7 +68,7 @@
     </div>
     <br>
 
-<!-- Affichage des détails du parcours -->
+    <!-- Affichage des détails du parcours -->
 
     <h3 class="title">Parcours {{ $parcours->nomParcours }} </h3>
     <br>
@@ -153,9 +154,9 @@
 
     <!-- Affichage des classements des golfeurs -->
 
-    @if (count($infos) > 0)
+    @if (count($infos[0]) > 0)
 
-    <h3 class="title">Classement Tournoi</h3>
+    <h3 class="title">Classements Tournoi</h3><br>
 
     @foreach($niveauxClassement as $niveau)
 
@@ -187,7 +188,7 @@
                 <th>Rang</th>
                 <th>Joueurs</th>
                 <th>Resultats</th>
-
+                
                 @foreach($infos as $info)
                 @php ($compt = 0)
                 @foreach($info as $info1)
@@ -201,8 +202,14 @@
                 @endif
                 @endforeach
                 @endforeach
+               
                 @endforeach
+
             </table>
+            <br>
+            @if($compt == 0)
+                   <h5>Classement non disponible pour l'instant !</h5>
+                @endif
         </div>
 
         @endforeach
@@ -232,7 +239,18 @@
 
     <br><br>
     @endforeach
+
+    @else
+    <h3 class="title">Classements Tournoi</h3>
+    <div class="div6 center-c"> 
+        <h4>Les classements ne sont pas disponibles pour l'instant, elles y seront à la fin des parcours !</h4>
+        <br><br><br>
+    </div>
+
     @endif
+
+    @include('layouts.pied')
+
 </body>
 
 </html>

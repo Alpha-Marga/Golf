@@ -2,7 +2,7 @@
 @include('layouts.entete')
 
 <body class="antialiased">
-  <div class="container h-100">
+  <div class="container h-75">
     <br><br>
     @foreach($saisons as $saison)
     @if(count($saison->tournois) > 0)
@@ -26,7 +26,7 @@
       <div>
         <table class="classement">
 
-          <h5> Classement {{ $leNiveau }} </h5>
+          <h5> {{ $leNiveau }} </h5>
 
           <th>Rang</th>
           <th>Joueurs</th>
@@ -69,7 +69,7 @@
       <div>
         <table class="classement2">
           
-          <h5> Classement {{ $leNiveau }} </h5>
+          <h5> {{ $leNiveau }} </h5>
 
           <th>Rang</th>
           <th>Joueurs</th>

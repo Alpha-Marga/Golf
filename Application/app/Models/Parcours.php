@@ -13,7 +13,7 @@ class Parcours extends Model
     protected $primaryKey = 'idParcours';
 
     public function tournoi(){
-        return $this->belongsTo(Tournoi::class);
+        return $this->belongsToMany(Tournoi::class);
     }
 
     public function trous(){

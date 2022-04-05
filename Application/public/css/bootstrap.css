@@ -159,7 +159,8 @@ h5, .h5 {
 }
 
 h6, .h6 {
-  font-size: 1rem;
+  font-size: 1.23rem;
+  padding-bottom: 10px;
 }
 
 p {
@@ -472,6 +473,9 @@ legend + * {
 
 ::-webkit-file-upload-button {
   font: inherit;
+  background-color: #fff;
+  padding-right: 52px;
+  border-radius: 7px;
 }
 
 ::file-selector-button {
@@ -647,7 +651,6 @@ progress {
 .container-fluid,
 .container-xxl,
 .container-xl,
-.container-lg,
 .container-md,
 .container-sm {
   /* width: 100%; */
@@ -655,6 +658,14 @@ progress {
   padding-left: var(--bs-gutter-x, 0.75rem);
   margin-right: auto;
   margin-left: auto;
+}
+
+.container-lg{
+
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 40px;
+  padding-left: 40px
 }
 
 @media (min-width: 576px) {
@@ -6181,6 +6192,11 @@ textarea.form-control-lg {
   position: relative;
   width: 100%;
   overflow: hidden;
+  border-radius: 0 0 10px 10px;
+  /* box-shadow: 1px 1px 4px black; */
+   justify-content:space-between;
+
+  
 }
 .carousel-inner::after {
   display: block;
@@ -6196,7 +6212,7 @@ textarea.form-control-lg {
   margin-right: -100%;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  transition: transform 0.6s ease-in-out;
+  transition: transform 1s ease-in-out;
 }
 @media (prefers-reduced-motion: reduce) {
   .carousel-item {
@@ -6248,14 +6264,16 @@ textarea.form-control-lg {
 
 .carousel-control-prev,
 .carousel-control-next {
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
+  margin-left: 60px;
+  margin-right: 60px;
   z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 15%;
+  width: 3%;
   padding: 0;
   color: #fff;
   text-align: center;
@@ -6290,11 +6308,14 @@ textarea.form-control-lg {
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
   display: inline-block;
+  background-color: #2f3780;
+  border-radius: 5px;
   width: 2rem;
-  height: 2rem;
-  background-repeat: no-repeat;
+  height: 3rem;
+  color: #000;
+  /* background-repeat: no-repeat; */
   background-position: 50%;
-  background-size: 100% 100%;
+  background-size: 120% 100%;
 }
 
 /* rtl:options: {

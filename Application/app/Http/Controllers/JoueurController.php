@@ -19,11 +19,12 @@ class JoueurController extends Controller
         $tournois = $joueur->tournois;
         $age = date('Y') -  date('Y', strtotime($joueur->dateNaissance));
         $couleur = $joueur->getColorPlayer();
+        $niveaux = $joueur->getLevelByGender();
         foreach ($tournois as $tournoi) {
             $resultatsTournoi[] = $tournoi->getResultatsByColor($couleur);
         }
         $message = null;
-        return view('vueJoueur', compact('joueur', 'age', 'tournois', 'resultatsTournoi', 'message'));
+        return view('vueJoueur', compact('joueur', 'age', 'tournois', 'niveaux', 'resultatsTournoi', 'message'));
     }
 
 
@@ -32,6 +33,11 @@ class JoueurController extends Controller
  {
         $joueur = Joueur::find($request->input('id'));
         $joueur->timestamps = false;
+        if($request->input('photo') != null)
+            $photo = "../image/".$request->input('photo');
+        else
+        $photo = $joueur->photo;
+        
         $joueur->update([
             'nom' => $request->input('nom'),
             'prenom' => $request->input('prenom'),
@@ -39,16 +45,17 @@ class JoueurController extends Controller
             'cp' => $request->input('cp'),
             'ville' => $request->input('ville'),
             'telephone' => $request->input('telephone'),
-            'Niveau' => $request->input('niveau')
+            'Niveau' => $request->input('niveau'),
+            'photo' => $photo
         ]);
         $tournois = $joueur->tournois;
         $age = date('Y') -  date('Y', strtotime($joueur->dateNaissance));
         $couleur = $joueur->getColorPlayer();
-
+        $niveaux = $joueur->getLevelByGender();
         foreach ($tournois as $tournoi) {
             $resultatsTournoi[] = $tournoi->getResultatsByColor($couleur);
         }
         $message = 'Le Profil a bien été mis à jour !';
-        return view('vueJoueur', compact('joueur', 'age', 'tournois', 'resultatsTournoi', 'message'));
+        return view('vueJoueur', compact('joueur', 'age', 'niveaux', 'tournois', 'resultatsTournoi', 'message'));
     }
 }

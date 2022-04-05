@@ -10,7 +10,7 @@
             <div class="div6">
                 <div>
                     <table class="score">
-                        <h5>Scores de {{ $joueur->nom.' '.$joueur->prenom}}</h5>
+                        <h6>Scores de {{ $joueur->nom.' '.$joueur->prenom}}</h6>
                         <th>Trou</th>
                         @for($i=0; $i < count($scores); $i++) <th>
                             {{ $coups[$i]->trouId }}

@@ -18,7 +18,6 @@ class Tournoi extends Model
 
     public function parcours()
     {
-
         return $this->hasOne(Parcours::class, 'idParcours');
     }
 
@@ -135,7 +134,6 @@ class Tournoi extends Model
         ->groupBy('joueurId', 'couleur', 'tournoiId')
         ->orderBy('resultat_tournoi')
         ->get();
-
         return $resultatsJoueurs;
     }
 }

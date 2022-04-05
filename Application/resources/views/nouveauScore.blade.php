@@ -25,10 +25,10 @@
 
                         <div class="div7">
                             <div>
-                                Jour: {{ $jour }}
+                                Jour : {{ $jour }}
                             </div>
                             <div id="child1">
-                                Niveau : {{ $niveau }}
+                                Départ : {{ $niveau }}
                                 <input type="hidden" name="couleur" value="{{ $niveau }}" required>
 
                             </div>

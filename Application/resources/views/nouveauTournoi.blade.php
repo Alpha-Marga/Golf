@@ -4,7 +4,7 @@
 <body class="antialiased">
     <div class="container h-100">
         <br><br>
-        <div class="div3">
+        <div class="div3a">
             <div id="child1">
                 <img src="../image/tournoi.jpg" />
             </div>

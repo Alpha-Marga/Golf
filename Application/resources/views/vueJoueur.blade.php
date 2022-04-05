@@ -5,11 +5,7 @@
     <div class="container h-100">
         <br><br>
         @if($message != null)
-        <div class="div6">
-            <div class="message2">
-                {{$message}}
-            </div>
-        </div>
+        <h3 class="title">{{$message}}</h3>
         @endif
         <br>
         <div class="div9">
@@ -88,7 +84,19 @@
                         <div class="form-group row">
                             <div class="col-sm-10">
                                 <label class="col-sm-3 col-form-label">Niveau:</label>
-                                <input id="zone_text2" type="text" name="niveau" value="{{$joueur->Niveau}}" required />
+                                <select id="zone_text2" name="niveau" required>
+                                <option value="{{ $joueur->Niveau }}">{{ $joueur->Niveau }}</option>
+                                    @foreach($niveaux as $niveau)
+                                    <option value="{{ $niveau->Niveau }}">{{ $niveau->Niveau }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-10">
+                                <label class="col-sm-3 col-form-label">Photo:</label>
+                                <input id="zone_text3" name="photo" value="{{$joueur->photo}}" type="file" />
                             </div>
                         </div>
 
@@ -149,8 +157,9 @@
             </div>
             @endforeach
         </div>
-        <br><br>
+        <br>
 
+        @include('layouts.pied')
 
     </div>
 
